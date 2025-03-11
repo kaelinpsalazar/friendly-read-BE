@@ -46,6 +46,16 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   gem "rspec-rails", "~> 5.0", ">= 5.0.1"
+  gem "pry"
+  gem "shoulda-matchers"
+  gem "webmock"
+  gem "vcr"
+  gem "factory_bot_rails"
+  gem "faker"
+end
+
+group :test do
+  gem "simplecov"
 end
 
 
