@@ -1,0 +1,3 @@
+class SavedBook < ApplicationRecord
+  
+end
