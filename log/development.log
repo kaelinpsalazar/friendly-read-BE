@@ -1,0 +1,45 @@
+  [1m[35mSQL (22.2ms)[0m  [1m[35mSET search_path TO public /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (1005.9ms)[0m  [1m[35mCREATE DATABASE "friendly_reader_be_development" ENCODING = 'unicode' /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (7.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY) /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2226545985787217745) /*application='FriendlyReaderBe'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='FriendlyReaderBe'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='FriendlyReaderBe'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.5ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-03-11 19:32:47.280487', '2025-03-11 19:32:47.280492') RETURNING "key" /*application='FriendlyReaderBe'*/[0m
+Migrating to CreateUsers (20250311192939)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (9.0ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "username" character varying, "email" character varying, "password" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_username" ON "users" ("username") /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='FriendlyReaderBe'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250311192939') RETURNING "version" /*application='FriendlyReaderBe'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='FriendlyReaderBe'*/[0m
+Migrating to CreateBooks (20250311193120)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE TABLE "books" ("id" bigserial primary key, "title" character varying, "author" character varying, "genre" character varying, "publication_year" integer, "isbn" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_books_on_isbn" ON "books" ("isbn") /*application='FriendlyReaderBe'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250311193120') RETURNING "version" /*application='FriendlyReaderBe'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='FriendlyReaderBe'*/[0m
+Migrating to CreateSavedBooks (20250311193205)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE TABLE "saved_books" ("id" bigserial primary key, "user_id" bigint NOT NULL, "book_id" bigint NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_9a345b9b17"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_3efc70ddbc"
+FOREIGN KEY ("book_id")
+  REFERENCES "books" ("id")
+) /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE INDEX "index_saved_books_on_user_id" ON "saved_books" ("user_id") /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (52.2ms)[0m  [1m[35mCREATE INDEX "index_saved_books_on_book_id" ON "saved_books" ("book_id") /*application='FriendlyReaderBe'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250311193205') RETURNING "version" /*application='FriendlyReaderBe'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='FriendlyReaderBe'*/[0m
+Migrating to CreateMessages (20250311193238)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE TABLE "messages" ("id" bigserial primary key, "user_id" bigint NOT NULL, "content" text, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_273a25a7a6"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE INDEX "index_messages_on_user_id" ON "messages" ("user_id") /*application='FriendlyReaderBe'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (1.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250311193238') RETURNING "version" /*application='FriendlyReaderBe'*/[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='FriendlyReaderBe'*/[0m
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT pg_advisory_unlock(2226545985787217745) /*application='FriendlyReaderBe'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='FriendlyReaderBe'*/[0m
